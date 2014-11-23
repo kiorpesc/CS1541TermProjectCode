@@ -98,6 +98,8 @@ char *replace(const char *src, const char *from, const char *to)
 // driver code
 int main(void) 
 {
+  struct timespec start_time, end_time;
+  long elapsed_sec, elapsed_nsec;
   int retVal;
   char text_filename[] = "text.txt";
   char pattern_filename[] = "pattern.txt";
@@ -106,6 +108,8 @@ int main(void)
   struct stat file_stats;
   off_t text_size;
   off_t pattern_size;  
+
+ clock_gettime(CLOCK_REALTIME, &start_time);
 
   // get size of input file for buffer size
   stat(text_filename, &file_stats);
@@ -189,4 +193,13 @@ int main(void)
   fclose(output_file);
   free(text_buffer);
   free(pattern_buffer);
+  
+  clock_gettime(CLOCK_REALTIME, &end_time);
+
+  elapsed_sec = end_time.tv_sec - start_time.tv_sec;
+  elapsed_nsec = end_time.tv_nsec - start_time.tv_nsec;
+
+  double elapsed_total = elapsed_sec + (elapsed_nsec/1000000000.0); 
+
+  printf("Elapsed Time: %f sec\n", elapsed_total);
 }
