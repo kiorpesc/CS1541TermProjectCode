@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
  
 #define PATTERN_BUFFER_SIZE   256
 
@@ -32,16 +33,26 @@ void removeSubstring(char *s,const char *toremove)
 }
 // End StackOverflow code
 
-int main(void) 
+int main(int argc, char *argv[]) 
 {
+
+  if(argc < 3) {
+    printf("Usage: ./delete <textfile> <patternfile>\n");
+    return 0;
+  }
+
+  struct timespec start_time, end_time;
+  long elapsed_sec, elapsed_nsec;
   int retVal;
-  char text_filename[] = "text.txt";
-  char pattern_filename[] = "pattern.txt";
+  char * text_filename = argv[1];
+  char * pattern_filename = argv[2];
   FILE *text_fp;
   FILE *pattern_fp;
   struct stat file_stats;
   off_t text_size;
   off_t pattern_size;  
+
+  clock_gettime(CLOCK_REALTIME, &start_time);
 
   // get size of text file for buffer size
   stat(text_filename, &file_stats);
@@ -50,11 +61,16 @@ int main(void)
   printf("Opening text file.\n");
 
   // open text file
-  text_fp = fopen("text.txt", "r+");
+  text_fp = fopen(text_filename, "r");
+  if(text_fp == NULL) {
+    printf("Failed to open text file.\n");
+    return 1;
+  }
 
   char * text_buffer = malloc(text_size + 1); // leave extra byte for now?
   retVal = fread(text_buffer, (size_t)text_size, 1, text_fp);
   if(retVal < 1){
+    printf("%s", text_buffer);
     printf("Error loading file into buffer.\n");
     fclose(text_fp);
     free(text_buffer);
@@ -70,7 +86,12 @@ int main(void)
   pattern_size = file_stats.st_size;
 
   // open pattern file
-  pattern_fp = fopen("pattern.txt", "r+");
+  pattern_fp = fopen(pattern_filename, "r+");
+  if(pattern_fp == NULL){
+    printf("Failed to load pattern file.\n");
+    return 1;
+  }
+
   printf("Loading pattern file into memory.\n");
  
   char * pattern_buffer = malloc(pattern_size + 1);
@@ -110,6 +131,16 @@ int main(void)
   fclose(output_file);
   free(text_buffer);
   free(pattern_buffer);
+
+  clock_gettime(CLOCK_REALTIME, &end_time);
+
+  elapsed_sec = end_time.tv_sec - start_time.tv_sec;
+  elapsed_nsec = end_time.tv_nsec - start_time.tv_nsec;
+
+  double elapsed_total = elapsed_sec + (elapsed_nsec/1000000000.0); 
+
+
+  printf("Elapsed Time: %f sec\n", elapsed_total);
 
 }
 

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
  
 #define PATTERN_BUFFER_SIZE   256
 
