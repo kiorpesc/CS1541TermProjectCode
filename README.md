@@ -8,3 +8,6 @@ It requires two files:
 2. A CSV file of patterns.
 
 The pattern file needs to be a single line, or some patterns will be skipped (I do NOT strip newlines).  It also should be an even number of patterns, so that replace can work properly.
+
+
+

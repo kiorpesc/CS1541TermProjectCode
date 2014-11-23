@@ -4,7 +4,7 @@ import java.io.*;
 import java.nio.charset.*;
 import java.nio.file.*;
 
-public class PhraseFinder {
+public class Replacer {
 
     private Charset charset;
     private Path phrasePath;
