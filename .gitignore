@@ -1,0 +1,8 @@
+#Compiled C binaries
+*.out
+
+#Java Stuff
+*.class
+
+#Output files
+*output*

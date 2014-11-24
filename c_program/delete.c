@@ -28,8 +28,12 @@
  **/
 void removeSubstring(char *s,const char *toremove)
 {
+  char * start = s;
+  int text_len = strlen(s);
+  char * string_end = start + text_len;
+  int remove_len = strlen(toremove);
   while( s=strstr(s,toremove) )
-    memmove(s,s+strlen(toremove),1+strlen(s+strlen(toremove)));
+    memmove(s,s+remove_len, string_end - s+remove_len);
 }
 // End StackOverflow code
 
