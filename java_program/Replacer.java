@@ -50,6 +50,9 @@ public class Replacer {
     }
 
     public static void main(String[] args) throws IOException {
+        long start_time, end_time;
+        start_time = System.nanoTime();
+
         if (args.length < 3) {
             System.out.println("Usage: java Replacer <mainFile> <phraseFile> <outputFile>");
             System.exit(0);
@@ -67,6 +70,12 @@ public class Replacer {
 
         pf.writeOut();
 
+
+        end_time = System.nanoTime();
+
+        double elapsed = (end_time - start_time)/1000000000.0;
+
+        System.out.printf("Elapsed Time: %f sec\n", elapsed);
+
     }
 }
-

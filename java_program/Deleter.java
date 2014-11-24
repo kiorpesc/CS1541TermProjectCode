@@ -52,6 +52,7 @@ public class Deleter {
     public static void main(String[] args) throws IOException {
         long start_time, end_time;
         start_time = System.nanoTime();
+
         if (args.length < 3) {
             System.out.println("Usage: java Deleter <textFile> <phraseFile> <outputFile>");
             System.exit(0);
@@ -66,7 +67,7 @@ public class Deleter {
         pf.printPhrases();
         pf.deletePhrases();
         pf.writeOut();
-       
+
         end_time = System.nanoTime();
 
         double elapsed = (end_time - start_time)/1000000000.0;
@@ -74,4 +75,3 @@ public class Deleter {
         System.out.printf("Elapsed Time: %f sec\n", elapsed);
     }
 }
-

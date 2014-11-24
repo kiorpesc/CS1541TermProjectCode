@@ -7,24 +7,26 @@
  * This program searches through the text for each pattern in the
  *   CSV file, removing any occurrance of it.
  **/
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
- 
+
 #define PATTERN_BUFFER_SIZE   256
 
 
-/**
+/** OPTIMIZATION HERE
  * removeSubstring:
- * 
+ *
  * args:  s         the string to search int
  *        toremove  the string to remove from s
  *
- * Code found on StackOverflow: 
- *    http://stackoverflow.com/questions/4833347/removing-substring-from-a-string
+ * Modified from StackOverflow code:
+ *   Removed repeated use of strlen() within loop
+ *   to improve performance (saves 10 seconds on
+ *   War and Peace delete).
  **/
 void removeSubstring(char *s,const char *toremove)
 {
@@ -35,13 +37,14 @@ void removeSubstring(char *s,const char *toremove)
   while( s=strstr(s,toremove) )
     memmove(s,s+remove_len, string_end - s+remove_len);
 }
-// End StackOverflow code
+///////// END ATTEMPTED OPTIMIZATION
 
-int main(int argc, char *argv[]) 
+
+int main(int argc, char *argv[])
 {
 
   if(argc < 3) {
-    printf("Usage: ./delete <textfile> <patternfile>\n");
+    printf("Usage: ./delete.out <textfile> <patternfile>\n");
     return 0;
   }
 
@@ -54,7 +57,7 @@ int main(int argc, char *argv[])
   FILE *pattern_fp;
   struct stat file_stats;
   off_t text_size;
-  off_t pattern_size;  
+  off_t pattern_size;
 
   clock_gettime(CLOCK_REALTIME, &start_time);
 
@@ -81,8 +84,8 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  text_buffer[text_size] = '\0';	// null terminate the file string  
-  
+  text_buffer[text_size] = '\0';	// null terminate the file string
+
   printf("Opening pattern file.\n");
 
   // get size of pattern file for buffer size
@@ -140,22 +143,8 @@ int main(int argc, char *argv[])
   elapsed_sec = end_time.tv_sec - start_time.tv_sec;
   elapsed_nsec = end_time.tv_nsec - start_time.tv_nsec;
 
-  double elapsed_total = elapsed_sec + (elapsed_nsec/1000000000.0); 
-
+  double elapsed_total = elapsed_sec + (elapsed_nsec/1000000000.0);
 
   printf("Elapsed Time: %f sec\n", elapsed_total);
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -4,16 +4,16 @@
  * Date: November 18th, 2014
  *
  * Takes in two files: a text file and a pattern file (CSV, one line)
- * For each pair of patterns in the CSV file, the program finds the 
+ * For each pair of patterns in the CSV file, the program finds the
  *   first pattern in the text and replaces it with the second pattern.
  **/
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
- 
+
 #define PATTERN_BUFFER_SIZE   256
 
 
@@ -96,12 +96,12 @@ char *replace(const char *src, const char *from, const char *to)
 // End DaniWeb code
 
 // driver code
-int main(int argc, char * argv[]) 
+int main(int argc, char * argv[])
 {
   if(argc < 3) {
-    printf("Usage: ./replace <textfile> <patternfile>\n");
+    printf("Usage: ./replace.out <textfile> <patternfile>\n");
     return 0;
-  }  
+  }
 
   struct timespec start_time, end_time;
   long elapsed_sec, elapsed_nsec;
@@ -112,7 +112,7 @@ int main(int argc, char * argv[])
   FILE *pattern_fp;
   struct stat file_stats;
   off_t text_size;
-  off_t pattern_size;  
+  off_t pattern_size;
 
  clock_gettime(CLOCK_REALTIME, &start_time);
 
@@ -134,9 +134,9 @@ int main(int argc, char * argv[])
     free(text_buffer);
     return 1;
   }
-  text_buffer[text_size] = '\0';	// null terminate the file string  
+  text_buffer[text_size] = '\0';	// null terminate the file string
 
-  
+
   printf("Opening pattern file.\n");
 
   // get the size of the pattern file to appropriately size the buffer
@@ -145,7 +145,7 @@ int main(int argc, char * argv[])
 
   // open pattern file
   pattern_fp = fopen(pattern_filename, "r+");
- 
+
   char * pattern_buffer = malloc(pattern_size + 1);
   retVal = fread(pattern_buffer, (size_t)pattern_size, 1, pattern_fp);
   if(retVal < 1) {
@@ -197,13 +197,13 @@ int main(int argc, char * argv[])
   fclose(output_file);
   free(text_buffer);
   free(pattern_buffer);
-  
+
   clock_gettime(CLOCK_REALTIME, &end_time);
 
   elapsed_sec = end_time.tv_sec - start_time.tv_sec;
   elapsed_nsec = end_time.tv_nsec - start_time.tv_nsec;
 
-  double elapsed_total = elapsed_sec + (elapsed_nsec/1000000000.0); 
+  double elapsed_total = elapsed_sec + (elapsed_nsec/1000000000.0);
 
   printf("Elapsed Time: %f sec\n", elapsed_total);
 }
